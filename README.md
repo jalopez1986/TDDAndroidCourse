@@ -1,6 +1,12 @@
 # TDDAndroidCourse
 https://www.udemy.com/course/android-11-tdd-masterclass/
 
-Librerias usadas
-Assertion: asserj https://assertj.github.io/doc/
-Mocks: Mocck
+## Libraries
+| Library | Link |
+| ------ | ------ |
+| AssertJ | [https://assertj.github.io/doc/](https://assertj.github.io/doc/) |
+| Mockk | [https://mockk.io/](https://mockk.io/) |
+
+
+
+
