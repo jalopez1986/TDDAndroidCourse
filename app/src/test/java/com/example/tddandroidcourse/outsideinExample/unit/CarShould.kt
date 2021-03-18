@@ -1,10 +1,16 @@
 package com.example.tddandroidcourse.outsideinExample.unit
 
+import com.example.tddandroidcourse.outsideinExample.utils.MainCoroutineScopeRule
 import com.example.tddandroidcourse.outsideinexample.Car
 import com.example.tddandroidcourse.outsideinexample.Engine
+import io.mockk.MockKAnnotations
 import io.mockk.mockk
 import io.mockk.verify
+import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.test.runBlockingTest
 import org.assertj.core.api.Assertions.assertThat
+import org.junit.Before
+import org.junit.Rule
 import org.junit.Test
 
 class CarShould {
@@ -13,18 +19,22 @@ class CarShould {
 
     private val car = Car(5.0, engine)
 
+    @get:Rule
+    var coroutinesTestRule = MainCoroutineScopeRule()
+
+
     @Test
-    fun loosingFuelWhenItTurnsOn() {
+    fun loosingFuelWhenItTurnsOn() = runBlockingTest {
         car.turnOn()
 
         assertThat(car.fuel).isEqualTo(4.5)
     }
 
     @Test
-    fun turnOnItsEngine() {
+    fun turnOnItsEngine() = runBlockingTest {
         car.turnOn()
 
-        verify(exactly = 1) {engine.turnOn() }
+        verify { runBlockingTest { engine.turnOn() } }
     }
 
 }

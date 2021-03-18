@@ -1,17 +1,23 @@
 package com.example.tddandroidcourse.outsideinExample.acceptance
 
 
+import com.example.tddandroidcourse.outsideinExample.utils.MainCoroutineScopeRule
 import com.example.tddandroidcourse.outsideinexample.Car
 import com.example.tddandroidcourse.outsideinexample.Engine
+import kotlinx.coroutines.test.runBlockingTest
 import org.assertj.core.api.Assertions.assertThat
+import org.junit.Rule
 import org.junit.Test
 
 class CarFeature {
     private val engine = Engine()
     private val car = Car(6.0, engine )
 
+    @get:Rule
+    var coroutinesTestRule = MainCoroutineScopeRule()
+
     @Test
-    fun carIsLoosingFuelWhenItTurnsOn() {
+    fun carIsLoosingFuelWhenItTurnsOn() = runBlockingTest {
 
         car.turnOn()
 
@@ -19,8 +25,10 @@ class CarFeature {
     }
 
     @Test
-    fun carIsTurningOnItsEngineAndIncreasesTheTemperature() {
+     fun carIsTurningOnItsEngineAndIncreasesTheTemperature() = runBlockingTest {
         car.turnOn()
+
+        coroutinesTestRule.advanceTimeBy(6001)
 
         assertThat(car.engine.temperature).isEqualTo(95)
         assertThat(car.engine.isTurnedOn).isTrue()
