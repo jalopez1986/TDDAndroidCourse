@@ -2,6 +2,7 @@ package com.example.tddandroidcourse.outsideinExample.unit
 
 import com.example.tddandroidcourse.outsideinExample.utils.MainCoroutineScopeRule
 import com.example.tddandroidcourse.outsideinexample.Engine
+import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.test.runBlockingTest
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Rule
@@ -21,9 +22,10 @@ class EngineShould {
     }
 
     @Test
-    fun riseTheTemperatureWhenTurnsOn() = runBlockingTest {
-        engine.turnOn()
+    fun riseTheTemperatureGraduallyWhenTurnsOn() = runBlockingTest {
+        val flow = engine.turnOn()
+        val actual = flow.toList()
 
-        assertThat(engine.temperature).isEqualTo(95)
+        assertThat(actual).isEqualTo(listOf(25, 50, 95))
     }
 }
