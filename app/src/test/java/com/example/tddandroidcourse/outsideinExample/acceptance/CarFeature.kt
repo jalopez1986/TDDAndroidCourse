@@ -1,7 +1,7 @@
 package com.example.tddandroidcourse.outsideinExample.acceptance
 
 
-import com.example.tddandroidcourse.outsideinExample.utils.MainCoroutineScopeRule
+import com.example.tddandroidcourse.utils.MainCoroutineScopeRule
 import com.example.tddandroidcourse.outsideinexample.Car
 import com.example.tddandroidcourse.outsideinexample.Engine
 import kotlinx.coroutines.test.runBlockingTest
@@ -14,7 +14,8 @@ class CarFeature {
     private val car = Car(6.0, engine )
 
     @get:Rule
-    var coroutinesTestRule = MainCoroutineScopeRule()
+    var coroutinesTestRule =
+        MainCoroutineScopeRule()
 
     @Test
     fun carIsLoosingFuelWhenItTurnsOn() = runBlockingTest {

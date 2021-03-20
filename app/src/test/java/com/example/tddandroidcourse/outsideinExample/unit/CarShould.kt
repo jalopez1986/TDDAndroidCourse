@@ -1,6 +1,6 @@
 package com.example.tddandroidcourse.outsideinExample.unit
 
-import com.example.tddandroidcourse.outsideinExample.utils.MainCoroutineScopeRule
+import com.example.tddandroidcourse.utils.MainCoroutineScopeRule
 import com.example.tddandroidcourse.outsideinexample.Car
 import com.example.tddandroidcourse.outsideinexample.Engine
 import com.nhaarman.mockitokotlin2.mock
@@ -9,10 +9,8 @@ import com.nhaarman.mockitokotlin2.verify
 import com.nhaarman.mockitokotlin2.whenever
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.test.runBlockingTest
 import org.assertj.core.api.Assertions.assertThat
-import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 

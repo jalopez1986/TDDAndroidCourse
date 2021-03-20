@@ -1,6 +1,6 @@
 package com.example.tddandroidcourse.outsideinExample.unit
 
-import com.example.tddandroidcourse.outsideinExample.utils.MainCoroutineScopeRule
+import com.example.tddandroidcourse.utils.MainCoroutineScopeRule
 import com.example.tddandroidcourse.outsideinexample.Engine
 import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.test.runBlockingTest
@@ -12,7 +12,8 @@ class EngineShould {
     private val engine = Engine()
 
     @get:Rule
-    var coroutinesTestRule = MainCoroutineScopeRule()
+    var coroutinesTestRule =
+        MainCoroutineScopeRule()
 
     @Test
     fun turnOn() = runBlockingTest {

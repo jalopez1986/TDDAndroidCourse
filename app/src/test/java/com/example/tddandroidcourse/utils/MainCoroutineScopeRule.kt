@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.example.tddandroidcourse.outsideinExample.utils
+package com.example.tddandroidcourse.utils
 
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
