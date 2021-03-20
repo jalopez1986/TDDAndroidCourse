@@ -27,7 +27,11 @@ class PlaylistFragment : Fragment() {
         setupViewModel()
 
         viewModel.playlists.observe(this as LifecycleOwner, Observer { playlists ->
-            setupList(view, playlists)
+            if (playlists.getOrNull() != null) {
+                setupList(view, playlists.getOrNull()!!)
+            } else {
+                //TODO
+            }
         })
 
         return view
