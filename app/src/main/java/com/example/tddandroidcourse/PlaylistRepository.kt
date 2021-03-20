@@ -1,7 +1,9 @@
 package com.example.tddandroidcourse
 
+import kotlinx.coroutines.flow.Flow
+
 class PlaylistRepository {
-    fun getPlaylists() {
+    suspend fun getPlaylists() : Flow<Result<List<Playlist>>> {
         TODO("Not yet implemented")
     }
 

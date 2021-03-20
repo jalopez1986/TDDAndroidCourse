@@ -6,9 +6,13 @@ import com.example.tddandroidcourse.utils.getValueForTest
 import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.times
 import com.nhaarman.mockitokotlin2.verify
+import com.nhaarman.mockitokotlin2.whenever
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.test.runBlockingTest
+import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test
 
-import org.junit.Assert.*
 import org.junit.Rule
 
 class PlaylistViewModelShould {
@@ -18,23 +22,39 @@ class PlaylistViewModelShould {
     @get:Rule
     val instantTaskExecutorRule = InstantTaskExecutorRule()
 
-    private val viewModel: PlaylistViewModel
     private val repository: PlaylistRepository = mock()
 
-    init {
-        viewModel = PlaylistViewModel(repository)
-
-    }
-
-
+    private val playlists = mock<List<Playlist>>()
+    private val expected = Result.success(playlists)
 
     @Test
-    fun getPlaylistsFromRepository() {
+    fun getPlaylistsFromRepository() = runBlockingTest {
+        runBlocking {
+            whenever(repository.getPlaylists()).thenReturn(
+                flow {
+                    emit(expected)
+                }
+            )
+        }
+
+        val viewModel = PlaylistViewModel(repository)
+
         viewModel.playlists.getValueForTest()
 
         verify(repository, times(1)).getPlaylists()
+    }
 
+    @Test
+    fun emitsPlaylistsFromRepository() = runBlockingTest {
+        runBlocking {
+            whenever(repository.getPlaylists()).thenReturn(
+                flow {
+                    emit(expected)
+                }
+            )
+        }
 
-
+        val viewModel = PlaylistViewModel(repository)
+        assertThat(viewModel.playlists.getValueForTest()).isEqualTo(expected)
     }
 }
