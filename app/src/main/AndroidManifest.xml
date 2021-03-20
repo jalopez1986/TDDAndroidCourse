@@ -12,7 +12,10 @@
         android:theme="@style/Theme.TDDAndroidCourse"
         android:usesCleartextTraffic="true"
         >
-        <activity android:name=".MainActivity">
+        <activity android:name=".MainActivity"
+            android:label="@string/playlist_screen_title"
+
+            >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
