@@ -1,4 +1,4 @@
-package com.example.tddandroidcourse
+package com.example.tddandroidcourse.playlist
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -10,13 +10,15 @@ import android.view.ViewGroup
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import com.example.tddandroidcourse.R
 
 
 class PlaylistFragment : Fragment() {
 
     lateinit var viewModel: PlaylistViewModel
     lateinit var viewModelFactory: PlaylistViewModelFactory
-    private val repository = PlaylistRepository()
+    private val repository =
+        PlaylistRepository()
 
 
 
@@ -44,12 +46,18 @@ class PlaylistFragment : Fragment() {
     ) {
         with(view as RecyclerView) {
             layoutManager = LinearLayoutManager(context)
-            adapter = MyPlaylistRecyclerViewAdapter(playlists)
+            adapter =
+                MyPlaylistRecyclerViewAdapter(
+                    playlists
+                )
         }
     }
 
     private fun setupViewModel() {
-        viewModelFactory = PlaylistViewModelFactory(repository)
+        viewModelFactory =
+            PlaylistViewModelFactory(
+                repository
+            )
         viewModel = ViewModelProvider(this, viewModelFactory).get(PlaylistViewModel::class.java)
     }
 

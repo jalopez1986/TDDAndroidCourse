@@ -1,7 +1,6 @@
-package com.example.tddandroidcourse
+package com.example.tddandroidcourse.playlist
 
-import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import com.example.tddandroidcourse.utils.MainCoroutineScopeRule
+import com.example.tddandroidcourse.outsideinExample.unit.BaseUnitTest
 import com.example.tddandroidcourse.utils.getValueForTest
 import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.times
@@ -13,31 +12,16 @@ import kotlinx.coroutines.test.runBlockingTest
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test
 
-import org.junit.Rule
 
-class PlaylistViewModelShould {
-    @get:Rule
-    var coroutinesRule = MainCoroutineScopeRule()
 
-    @get:Rule
-    val instantTaskExecutorRule = InstantTaskExecutorRule()
-
+class PlaylistViewModelShould : BaseUnitTest() {
     private val repository: PlaylistRepository = mock()
-
     private val playlists = mock<List<Playlist>>()
     private val expected = Result.success(playlists)
 
     @Test
     fun getPlaylistsFromRepository() = runBlockingTest {
-        runBlocking {
-            whenever(repository.getPlaylists()).thenReturn(
-                flow {
-                    emit(expected)
-                }
-            )
-        }
-
-        val viewModel = PlaylistViewModel(repository)
+        val viewModel = mockSuccessfulCase()
 
         viewModel.playlists.getValueForTest()
 
@@ -46,6 +30,12 @@ class PlaylistViewModelShould {
 
     @Test
     fun emitsPlaylistsFromRepository() = runBlockingTest {
+        val viewModel = mockSuccessfulCase()
+
+        assertThat(viewModel.playlists.getValueForTest()).isEqualTo(expected)
+    }
+
+    private fun mockSuccessfulCase(): PlaylistViewModel {
         runBlocking {
             whenever(repository.getPlaylists()).thenReturn(
                 flow {
@@ -54,7 +44,6 @@ class PlaylistViewModelShould {
             )
         }
 
-        val viewModel = PlaylistViewModel(repository)
-        assertThat(viewModel.playlists.getValueForTest()).isEqualTo(expected)
+        return PlaylistViewModel(repository)
     }
 }

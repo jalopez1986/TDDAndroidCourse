@@ -2,8 +2,7 @@ package com.example.tddandroidcourse
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import com.example.tddandroidcourse.outsideinexample.Car
-import com.example.tddandroidcourse.outsideinexample.Engine
+import com.example.tddandroidcourse.playlist.PlaylistFragment
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

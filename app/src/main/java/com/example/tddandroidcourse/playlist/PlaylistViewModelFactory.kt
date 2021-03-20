@@ -1,4 +1,4 @@
-package com.example.tddandroidcourse
+package com.example.tddandroidcourse.playlist
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
