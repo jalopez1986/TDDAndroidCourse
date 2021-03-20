@@ -29,19 +29,28 @@ class PlaylistServiceShould : BaseUnitTest() {
 
     @Test
     fun convertValuesToFlowResultAndEmitsThem() = runBlockingTest {
-        whenever(api.fetchAllPlaylists()).thenReturn(playlists)
-
-        service = PlaylistService(api)
+        mockSuccessfulCase()
 
         assertThat(service.fetchPlaylists().first()).isEqualTo(Result.success(playlists))
     }
 
+
     @Test
     fun emitsErrorResultWhenNetworkFails() = runBlockingTest {
+        mockFailureCase()
+
+        assertThat(service.fetchPlaylists().first().exceptionOrNull()?.message).isEqualTo("Something went wrong")
+    }
+
+    private suspend fun mockSuccessfulCase() {
+        whenever(api.fetchAllPlaylists()).thenReturn(playlists)
+
+        service = PlaylistService(api)
+    }
+
+    private suspend fun mockFailureCase() {
         whenever(api.fetchAllPlaylists()).thenThrow(RuntimeException("Damm backend developer"))
 
         service = PlaylistService(api)
-
-        assertThat(service.fetchPlaylists().first().exceptionOrNull()?.message).isEqualTo("Something went wrong")
     }
 }
