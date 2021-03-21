@@ -12,6 +12,8 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.example.tddandroidcourse.R
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.android.synthetic.main.fragment_playlist.*
+import kotlinx.android.synthetic.main.fragment_playlist.view.*
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -33,9 +35,17 @@ class PlaylistFragment : Fragment() {
 
         setupViewModel()
 
+        viewModel.loader.observe(this as LifecycleOwner, Observer {loading ->
+            when(loading) {
+                true -> loader.visibility = View.VISIBLE
+                else -> loader.visibility = View.GONE
+            }
+
+        })
+
         viewModel.playlists.observe(this as LifecycleOwner, Observer { playlists ->
             if (playlists.getOrNull() != null) {
-                setupList(view, playlists.getOrNull()!!)
+                setupList(view.playlists_list, playlists.getOrNull()!!)
             } else {
                 //TODO
             }
@@ -50,10 +60,8 @@ class PlaylistFragment : Fragment() {
     ) {
         with(view as RecyclerView) {
             layoutManager = LinearLayoutManager(context)
-            adapter =
-                MyPlaylistRecyclerViewAdapter(
-                    playlists
-                )
+
+            adapter = MyPlaylistRecyclerViewAdapter(playlists)
         }
     }
 

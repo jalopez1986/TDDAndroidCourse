@@ -1,6 +1,7 @@
 package com.example.tddandroidcourse.playlist
 
 import com.example.tddandroidcourse.outsideinExample.unit.BaseUnitTest
+import com.example.tddandroidcourse.utils.captureValues
 import com.example.tddandroidcourse.utils.getValueForTest
 import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.times
@@ -38,18 +39,43 @@ class PlaylistViewModelShould : BaseUnitTest() {
 
     @Test
     fun emitErrorWhenReceiveError() {
-        runBlocking {
-            whenever(repository.getPlaylists()).thenReturn(
-                flow {
-                    emit(Result.failure<List<Playlist>>(exception))
-                }
-            )
-        }
-        val viewModel = PlaylistViewModel(repository)
+        val viewModel = mockErrorCase()
 
         //assertThat(viewModel.playlists.getValueForTest()!!.exceptionOrNull()).isEqualTo(exception)
     }
 
+    @Test
+    fun showSpinnerWhileLoading() = runBlockingTest {
+         val viewModel = mockSuccessfulCase()
+
+        viewModel.loader.captureValues {
+            viewModel.playlists.getValueForTest()
+
+            assertThat(values[0]).isTrue()
+        }
+    }
+
+    @Test
+    fun closeLoaderAfterPlaylistsLoad() = runBlockingTest {
+        val viewModel = mockSuccessfulCase()
+
+        viewModel.loader.captureValues {
+            viewModel.playlists.getValueForTest()
+
+            assertThat(values.last()).isFalse()
+        }
+    }
+
+    @Test
+    fun closeLoaderAfterError() = runBlockingTest {
+        val viewModel = mockErrorCase()
+
+        viewModel.loader.captureValues {
+            viewModel.playlists.getValueForTest()
+
+            assertThat(values.last()).isFalse()
+        }
+    }
 
     private fun mockSuccessfulCase(): PlaylistViewModel {
         runBlocking {
@@ -60,6 +86,17 @@ class PlaylistViewModelShould : BaseUnitTest() {
             )
         }
 
+        return PlaylistViewModel(repository)
+    }
+
+    private fun mockErrorCase(): PlaylistViewModel {
+        runBlocking {
+            whenever(repository.getPlaylists()).thenReturn(
+                flow {
+                    emit(Result.failure<List<Playlist>>(exception))
+                }
+            )
+        }
         return PlaylistViewModel(repository)
     }
 }
