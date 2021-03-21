@@ -11,6 +11,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.TDDAndroidCourse"
         android:usesCleartextTraffic="true"
+        android:name=".GroovyApplication"
         >
         <activity android:name=".MainActivity"
             android:label="@string/playlist_screen_title"
