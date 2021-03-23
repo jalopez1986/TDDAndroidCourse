@@ -10,6 +10,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.navArgs
 import com.example.tddandroidcourse.R
+import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_playlist_detail.*
 import javax.inject.Inject
@@ -37,10 +38,22 @@ class PlaylistDetailFragment : Fragment() {
         val id = args.playlistId
 
         setupViewModel()
+
+        observeLoader()
+
         viewModel.getPlaylistDetails(id)
         observeLiveData()
 
         return view
+    }
+
+    private fun observeLoader() {
+        viewModel.loader.observe(this as LifecycleOwner, Observer { loading ->
+            when (loading) {
+                true -> playlistDetails_loader.visibility = View.VISIBLE
+                else -> playlistDetails_loader.visibility = View.GONE
+            }
+        })
     }
 
     private fun setupViewModel() {
@@ -52,7 +65,10 @@ class PlaylistDetailFragment : Fragment() {
             if (playlistDetails.getOrNull() != null) {
                 setupUI(playlistDetails)
             } else {
-                //TODO
+                Snackbar.make(playlists_details_root,
+                R.string.generic_error,
+                Snackbar.LENGTH_LONG)
+                        .show()
             }
 
         })
