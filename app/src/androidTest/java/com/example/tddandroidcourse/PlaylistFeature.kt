@@ -30,9 +30,6 @@ import org.junit.Rule
 
 
 class PlaylistFeature : BaseUITest() {
-    val activityRule = ActivityTestRule(MainActivity::class.java)
-    @Rule get
-
     @Test
     fun displayScreenTitle() {
         assertDisplayed("Playlists")

@@ -10,16 +10,11 @@ import android.view.ViewGroup
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.NavDirections
 import androidx.navigation.findNavController
-import com.example.tddandroidcourse.PlaylistDetailFragment
 import com.example.tddandroidcourse.R
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_playlist.*
 import kotlinx.android.synthetic.main.fragment_playlist.view.*
-import okhttp3.OkHttpClient
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -38,14 +33,24 @@ class PlaylistFragment : Fragment() {
 
         setupViewModel()
 
-        viewModel.loader.observe(this as LifecycleOwner, Observer {loading ->
-            when(loading) {
+        ObserveLoader()
+
+        obeservePlaylists(view)
+
+        return view
+    }
+
+    private fun ObserveLoader() {
+        viewModel.loader.observe(this as LifecycleOwner, Observer { loading ->
+            when (loading) {
                 true -> loader.visibility = View.VISIBLE
                 else -> loader.visibility = View.GONE
             }
 
         })
+    }
 
+    private fun obeservePlaylists(view: View) {
         viewModel.playlists.observe(this as LifecycleOwner, Observer { playlists ->
             if (playlists.getOrNull() != null) {
                 setupList(view.playlists_list, playlists.getOrNull()!!)
@@ -53,8 +58,6 @@ class PlaylistFragment : Fragment() {
                 //TODO
             }
         })
-
-        return view
     }
 
     private fun setupList(
